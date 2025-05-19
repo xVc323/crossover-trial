@@ -1,3 +1,9 @@
+**Quick Run:**
+
+```sh
+bash <(curl -fsSL "https://raw.githubusercontent.com/xVc323/crossover-trial/main/reset_crossover_fully.sh")
+```
+
 # CrossOver Trial Reset Script
 
 This script is designed to assist macOS users in resetting the CrossOver trial period and attempting to clear specific registry entries within CrossOver bottles that may relate to trial status.
