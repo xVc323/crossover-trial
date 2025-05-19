@@ -1,4 +1,4 @@
-**Quick Run:**
+**Quick Run (run this in your Terminal):**
 
 ```sh
 bash <(curl -fsSL "https://raw.githubusercontent.com/xVc323/crossover-trial/main/reset_crossover_fully.sh")
