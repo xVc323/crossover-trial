@@ -42,4 +42,4 @@ This script is designed to assist macOS users in resetting the CrossOver trial p
 *   This script modifies system preferences and bottle registry files. While it includes backup mechanisms for registry files, use it at your own risk.
 *   The effectiveness of this script in resetting the trial may vary depending on CrossOver versions and other factors.
 *   This script is provided for educational and personal use only. Please support software developers by purchasing licenses for software you find useful.
-*   Blocking CrossOver's internet access via a firewall (not handled by this script) might be necessary for the trial reset to persist. 
+*   Blocking CrossOver's internet access via a firewall (not handled by this script) might be necessary for the trial reset to persist.
