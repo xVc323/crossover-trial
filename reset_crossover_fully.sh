@@ -9,47 +9,27 @@ error_message() {
   echo "[ERROR] $1" >&2
 }
 
-echo "CrossOver Nuclear Trial Reset"
+echo "CrossOver Trial Reset Script"
 echo "============================"
-echo "This script removes ALL trial tracking mechanisms including:"
-echo "- Background license checking service"
-echo "- HTTP/WebKit caches"
-echo "- Registry entries"
-echo "- Preference files"
+echo "This script removes local trial tracking mechanisms including:"
+echo "- Registry entries and preference files"
+echo "- HTTP/WebKit caches containing trial data"
 echo "- TIE files (trial information exchange)"
-echo "- Keychain entries"
+echo "- Keychain entries for CrossOver/CodeWeavers"
+echo "- Version tracking files in bottles"
 echo
 
-log_message "Starting nuclear reset process automatically..."
+log_message "Starting reset process automatically..."
 log_message "IMPORTANT: Close CrossOver and ALL Windows apps before running!"
 
 ERRORS=0
 
-# 1. Stop and remove the background license service
-log_message "=== 1. Removing Background License Service ==="
-PLIST_PATH="$HOME/Library/LaunchAgents/com.codeweavers.CrossOver.license.plist"
-if [ -f "$PLIST_PATH" ]; then
-    log_message "Stopping license service..."
-    launchctl unload "$PLIST_PATH" 2>/dev/null
-    rm -f "$PLIST_PATH"
-    log_message "✓ License service removed"
-else
-    log_message "No license service found"
-fi
-
-# Remove the license script directory
-LICENSE_DIR="$HOME/CrossOverLicence"
-if [ -d "$LICENSE_DIR" ]; then
-    rm -rf "$LICENSE_DIR"
-    log_message "✓ License script directory removed"
-fi
-
-# 2. Nuclear preference reset
-log_message "=== 2. Resetting Preferences ==="
+# 1. Nuclear preference reset
+log_message "=== 1. Resetting Preferences ==="
 PLIST_FILE="$HOME/Library/Preferences/com.codeweavers.CrossOver.plist"
 if [ -f "$PLIST_FILE" ]; then
     # Backup first
-    cp "$PLIST_FILE" "$PLIST_FILE.nuclear.bak.$(date +%Y%m%d_%H%M%S)"
+    cp "$PLIST_FILE" "$PLIST_FILE.bak.$(date +%Y%m%d_%H%M%S)"
     
     # Set trial date to today
     TODAY_DATE=$(date -u +"%Y-%m-%dT10:00:00Z")
@@ -69,8 +49,8 @@ else
     ERRORS=$((ERRORS + 1))
 fi
 
-# 3. Remove TIE files
-log_message "=== 3. Removing TIE Files ==="
+# 2. Remove TIE files
+log_message "=== 2. Removing TIE Files ==="
 TIE_DIR="$HOME/Library/Application Support/CrossOver/tie"
 if [ -d "$TIE_DIR" ]; then
     rm -rf "$TIE_DIR"
@@ -79,8 +59,8 @@ else
     log_message "No TIE directory found"
 fi
 
-# 4. Nuclear cache clearing
-log_message "=== 4. Nuclear Cache Clearing ==="
+# 3. Clear caches
+log_message "=== 3. Clearing Caches ==="
 CACHE_DIRS=(
     "$HOME/Library/Caches/com.codeweavers.CrossOver"
     "$HOME/Library/HTTPStorages/com.codeweavers.CrossOver"
@@ -95,8 +75,8 @@ for cache_dir in "${CACHE_DIRS[@]}"; do
     fi
 done
 
-# 5. Reset ALL bottles
-log_message "=== 5. Resetting ALL Bottles ==="
+# 4. Reset ALL bottles
+log_message "=== 4. Resetting ALL Bottles ==="
 BOTTLES_DIR="$HOME/Library/Application Support/CrossOver/Bottles"
 if [ -d "$BOTTLES_DIR" ]; then
     BOTTLE_COUNT=0
@@ -113,7 +93,7 @@ if [ -d "$BOTTLES_DIR" ]; then
         reg_file="$bottle_path/system.reg"
         if [ -f "$reg_file" ]; then
             # Create backup
-            cp "$reg_file" "$reg_file.nuclear.bak.$(date +%Y%m%d_%H%M%S)"
+            cp "$reg_file" "$reg_file.bak.$(date +%Y%m%d_%H%M%S)"
             
             # Remove ALL CodeWeavers entries
             awk '
@@ -134,18 +114,18 @@ else
     ERRORS=$((ERRORS + 1))
 fi
 
-# 6. Remove any CrossOver keychain entries
-log_message "=== 6. Cleaning Keychain ==="
+# 5. Remove any CrossOver keychain entries
+log_message "=== 5. Cleaning Keychain ==="
 security delete-generic-password -s "crossover" 2>/dev/null && log_message "✓ CrossOver keychain entry removed" || log_message "No CrossOver keychain entries"
 security delete-generic-password -s "codeweavers" 2>/dev/null && log_message "✓ CodeWeavers keychain entry removed" || log_message "No CodeWeavers keychain entries"
 
-# 7. Kill any running CrossOver processes
-log_message "=== 7. Killing CrossOver Processes ==="
+# 6. Kill any running CrossOver processes
+log_message "=== 6. Killing CrossOver Processes ==="
 pkill -f CrossOver 2>/dev/null && log_message "✓ CrossOver processes killed" || log_message "No CrossOver processes running"
 
 # Summary
 echo
-log_message "=== Nuclear Reset Complete! ==="
+log_message "=== Reset Complete! ==="
 echo
 if [ $ERRORS -eq 0 ]; then
     log_message "✅ All operations completed successfully!"
@@ -154,20 +134,14 @@ else
 fi
 
 echo
-log_message "IMPORTANT NEXT STEPS:"
-log_message "1. Restart your Mac (this clears any memory-cached trial info)"
-log_message "2. Ensure Little Snitch is blocking these domains:"
-log_message "   - codeweavers.com"
-log_message "   - www.codeweavers.com"
-log_message "   - *.codeweavers.com"
-log_message "3. Start CrossOver and check trial status"
+log_message "NEXT STEPS:"
+log_message "1. Restart your Mac to clear any memory-cached trial information"
+log_message "2. Start CrossOver and verify the trial has been reset"
 echo
-log_message "If CrossOver still shows expired after reboot, it may be using:"
-log_message "- New online validation methods"
-log_message "- Hardware fingerprinting"
-log_message "- Encrypted validation servers"
+log_message "If the trial still shows as expired after following these steps,"
+log_message "CrossOver may have implemented new validation methods."
 echo
-log_message "In that case, consider using alternative Wine implementations like:"
+log_message "Alternative Wine implementations to consider:"
 log_message "- PlayOnMac"
 log_message "- Wineskin"
 log_message "- Official Wine with custom prefixes" 

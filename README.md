@@ -1,6 +1,6 @@
 # CrossOver Trial Reset Script
 
-This script provides a comprehensive nuclear reset of both the CrossOver trial period and bottle settings on your Mac.
+This script provides a comprehensive reset of CrossOver trial period and bottle settings on your Mac by targeting local trial tracking mechanisms.
 
 ## 🚀 Quick Reset (Recommended)
 
@@ -20,12 +20,11 @@ chmod +x reset_crossover_fully.sh
 
 ## What This Script Does
 
-This nuclear reset removes **ALL** trial tracking mechanisms:
+This reset removes **local** trial tracking mechanisms:
 
-- ✅ **Background license checking service** (the hidden culprit!)
+- ✅ **Registry entries** and preference files
 - ✅ **HTTP/WebKit caches** containing trial validation data  
 - ✅ **TIE (Trial Information Exchange) files**
-- ✅ **All registry entries** and preference files
 - ✅ **Keychain entries** for CrossOver/CodeWeavers
 - ✅ **Running CrossOver processes**
 - ✅ **Version tracking files** in bottles
@@ -34,16 +33,11 @@ This nuclear reset removes **ALL** trial tracking mechanisms:
 
 - Make sure CrossOver is **fully closed**
 - Ensure **ALL Windows emulated apps are NOT running**
-- A firewall program (like **LuLu** or **Little Snitch**) to block CodeWeavers' domains
 
 ## After Running the Script
 
 1. **Restart your Mac** (this clears any memory-cached trial info)
-2. **Set up domain blocking** using Little Snitch or LuLu:
-   - `codeweavers.com`
-   - `www.codeweavers.com`
-   - `*.codeweavers.com`
-3. **Start CrossOver** and verify trial status
+2. **Start CrossOver** and verify trial status
 
 ## Script Features
 
@@ -57,22 +51,20 @@ This nuclear reset removes **ALL** trial tracking mechanisms:
 
 ### If CrossOver still shows the trial as expired:
 
-1. **Ensure domain blocking is active** - This is the most critical step
-2. **Check that you restarted your Mac** after running the script
-3. **Verify all CrossOver processes were killed** before running the script
+1. **Check that you restarted your Mac** after running the script
+2. **Verify all CrossOver processes were killed** before running the script
 
 ### Common Issues:
 
 - **Permission denied errors:** Grant Terminal Full Disk Access in System Settings > Privacy & Security > Full Disk Access
-- **Trial still expires:** Ensure firewall is properly blocking CodeWeavers domains
 - **Applications won't launch:** Check bottle integrity and consider recreating bottles
 
 ### If Nothing Works:
 
 CrossOver may be using new validation methods:
 - Hardware fingerprinting
-- Encrypted validation servers
-- New online validation protocols
+- New local validation protocols
+- Additional hidden trial tracking files
 
 Consider alternative Wine implementations:
 - **PlayOnMac**
@@ -112,7 +104,6 @@ rm -rf ~/Library/WebKit/com.codeweavers.CrossOver
 - This script modifies system preferences and bottle registry files. While it includes backup mechanisms, **use at your own risk**.
 - The effectiveness may vary depending on CrossOver versions and other factors.
 - This script is provided for **educational and personal use only**. Please support software developers by purchasing licenses for software you find useful.
-- **Blocking internet access** via firewall is essential for the trial reset to persist.
 
 ## Contributing
 

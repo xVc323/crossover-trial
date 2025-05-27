@@ -1,0 +1,22 @@
+# Testing directory
+testing/
+
+# Network analysis files
+*.pcap
+*.pcapng
+*.har
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# macOS specific
+.DS_Store
+
+# Backup files
+*.bak
+*.backup
+
+# CrossOver specific temporary files
+crossover_test_* 
